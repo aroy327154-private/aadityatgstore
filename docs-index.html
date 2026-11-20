@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aaditya Tg Store — Reseller API Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070b14;--bg2:#0c1220;--bg3:#131b2e;--card:#0f1729;--card-hover:#141e33;--border:#1e2a42;--border-glow:rgba(59,130,246,.35);--text:#eef3fb;--muted:#8494b0;--primary:#3b82f6;--primary2:#60a5fa;--green:#22c55e;--green2:#4ade80;--orange:#f59e0b;--red:#ef4444;--purple:#a78bfa;--cyan:#22d3ee;--pink:#f472b6;--radius:16px;--shadow:0 12px 40px rgba(0,0,0,.4)}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;min-height:100vh;overflow-x:hidden}
+.bg-mesh{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 90% 60% at 10% -5%,rgba(59,130,246,.2),transparent 55%),radial-gradient(ellipse 70% 50% at 95% 5%,rgba(139,92,246,.14),transparent 50%),radial-gradient(ellipse 60% 40% at 50% 110%,rgba(34,197,94,.1),transparent 45%),radial-gradient(ellipse 40% 30% at 70% 60%,rgba(34,211,238,.06),transparent);animation:meshPulse 12s ease-in-out infinite alternate}
+@keyframes meshPulse{0%{opacity:.85;transform:scale(1)}100%{opacity:1;transform:scale(1.03)}}
+.orb{position:fixed;border-radius:50%;filter:blur(80px);opacity:.25;pointer-events:none;z-index:0;animation:float 18s ease-in-out infinite}
+.orb1{width:320px;height:320px;background:#3b82f6;top:8%;left:-5%}.orb2{width:260px;height:260px;background:#8b5cf6;top:55%;right:-4%;animation-delay:-6s}.orb3{width:200px;height:200px;background:#22d3ee;bottom:10%;left:30%;animation-delay:-12s}
+@keyframes float{0%,100%{transform:translate(0,0)}33%{transform:translate(30px,-40px)}66%{transform:translate(-20px,20px)}}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 22px 100px}
+nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px) saturate(1.4);background:rgba(7,11,20,.8);border-bottom:1px solid var(--border);padding:12px 0;transition:box-shadow .3s}
+nav.scrolled{box-shadow:0 8px 32px rgba(0,0,0,.35)}
+.nav-inner{max-width:1120px;margin:0 auto;padding:0 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:11px;font-weight:800;font-size:1.12rem;letter-spacing:-.02em}
+.logo-badge{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#3b82f6,#8b5cf6 60%,#22d3ee);display:grid;place-items:center;font-size:17px;box-shadow:0 4px 16px rgba(59,130,246,.4);animation:logoGlow 3s ease-in-out infinite alternate}
+@keyframes logoGlow{from{box-shadow:0 4px 16px rgba(59,130,246,.35)}to{box-shadow:0 4px 28px rgba(139,92,246,.55)}}
+.nav-links{display:flex;gap:4px;flex-wrap:wrap}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.84rem;font-weight:500;padding:8px 13px;border-radius:9px;transition:.2s}
+.nav-links a:hover{color:var(--text);background:var(--bg3)}
+.hero{text-align:center;padding:80px 0 56px}
+.hero-badge{display:inline-flex;align-items:center;gap:9px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.28);color:var(--green2);font-size:.78rem;font-weight:700;padding:7px 16px;border-radius:999px;margin-bottom:26px;animation:fadeUp .7s ease both}
+.pulse-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 0 rgba(34,197,94,.5);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}70%{box-shadow:0 0 0 10px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+.hero h1{font-size:clamp(2.1rem,5.2vw,3.4rem);font-weight:900;letter-spacing:-.035em;line-height:1.12;margin-bottom:18px;animation:fadeUp .7s ease .1s both}
+.hero h1 .grad{background:linear-gradient(120deg,#60a5fa 0%,#a78bfa 40%,#22d3ee 80%,#4ade80 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gradShift 6s ease infinite}
+@keyframes gradShift{0%,100%{background-position:0% center}50%{background-position:100% center}}
+.hero p{color:var(--muted);font-size:1.12rem;max-width:580px;margin:0 auto 32px;animation:fadeUp .7s ease .2s both}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fadeUp .7s ease .3s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:11px;font-weight:650;font-size:.95rem;text-decoration:none;border:none;cursor:pointer;transition:.25s}
+.btn-primary{background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;box-shadow:0 6px 24px rgba(59,130,246,.4)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 36px rgba(59,130,246,.55)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--primary);color:var(--primary2);background:rgba(59,130,246,.08)}
+section{margin-bottom:64px}
+.sec-title{font-size:1.5rem;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:12px;letter-spacing:-.02em}
+.sec-title .icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:18px;flex-shrink:0}
+.sec-desc{color:var(--muted);margin-bottom:24px;font-size:.95rem;max-width:640px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:.3s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(59,130,246,.06),transparent 50%);opacity:0;transition:.3s}
+.card:hover{border-color:var(--border-glow);transform:translateY(-4px);box-shadow:var(--shadow);background:var(--card-hover)}
+.card:hover::before{opacity:1}
+.server-card .badge{display:inline-block;font-size:.7rem;font-weight:800;padding:4px 11px;border-radius:7px;margin-bottom:14px;letter-spacing:.05em;text-transform:uppercase}
+.badge-s1{background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.25)}
+.badge-s2{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.25)}
+.badge-s3{background:rgba(167,139,250,.15);color:#a78bfa;border:1px solid rgba(167,139,250,.25)}
+.server-card h3{font-size:1.15rem;margin-bottom:8px;font-weight:700}
+.server-card p{color:var(--muted);font-size:.9rem;margin-bottom:16px;position:relative}
+.meta{display:flex;flex-wrap:wrap;gap:7px;position:relative}
+.tag{font-size:.72rem;font-weight:650;padding:4px 10px;border-radius:6px;background:var(--bg3);color:var(--muted);border:1px solid var(--border)}
+pre,code{font-family:'JetBrains Mono',ui-monospace,monospace}
+code{font-size:.86em;background:rgba(255,255,255,.06);padding:2px 7px;border-radius:5px}
+.code-block{background:#0a0e17;border:1px solid var(--border);border-radius:13px;overflow:hidden;margin:12px 0 18px;transition:border-color .25s}
+.code-block:hover{border-color:rgba(59,130,246,.3)}
+.code-header{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;background:#101624;border-bottom:1px solid var(--border);font-size:.76rem;color:var(--muted);font-weight:550}
+.code-header .left{display:flex;align-items:center;gap:12px}
+.dots{display:flex;gap:6px}.dot{width:11px;height:11px;border-radius:50%}
+.dot-r{background:#ff5f56}.dot-y{background:#ffbd2e}.dot-g{background:#27c93f}
+.copy-btn{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:7px;font-size:.72rem;cursor:pointer;font-family:inherit;font-weight:600;transition:.2s}
+.copy-btn:hover{color:var(--text);border-color:var(--primary);background:rgba(59,130,246,.1)}
+.copy-btn.copied{color:var(--green2);border-color:var(--green)}
+pre{padding:18px 20px;overflow-x:auto;font-size:.83rem;line-height:1.7;color:#e6edf3;margin:0}
+.kw{color:#ff7b72}.str{color:#a5d6ff}.num{color:#79c0ff}.cm{color:#6e7681}.fn{color:#d2a8ff}.key{color:#7ee787}
+.table-wrap{overflow-x:auto;border-radius:13px;border:1px solid var(--border);margin:12px 0 22px;background:var(--card)}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th{text-align:left;padding:13px 16px;background:var(--bg3);color:var(--muted);font-weight:650;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border)}
+td{padding:13px 16px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:none}tr:hover td{background:rgba(59,130,246,.04)}
+.method{font-weight:800;font-size:.72rem;padding:4px 9px;border-radius:6px;font-family:'JetBrains Mono',monospace;letter-spacing:.03em}
+.m-get{background:rgba(34,197,94,.15);color:#4ade80}.m-post{background:rgba(59,130,246,.18);color:#60a5fa}
+.auth-box{background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(167,139,250,.07));border:1px solid rgba(59,130,246,.28);border-radius:var(--radius);padding:24px;margin-bottom:18px}
+.auth-box h3{margin-bottom:8px;font-size:1.08rem}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;font-weight:700;padding:5px 12px;border-radius:999px}
+.st-wait{background:rgba(245,158,11,.14);color:#fbbf24;border:1px solid rgba(245,158,11,.25)}
+.st-done{background:rgba(34,197,94,.14);color:#4ade80;border:1px solid rgba(34,197,94,.25)}
+.st-cancel{background:rgba(239,68,68,.14);color:#f87171;border:1px solid rgba(239,68,68,.25)}
+.st-retry{background:rgba(167,139,250,.14);color:#a78bfa;border:1px solid rgba(167,139,250,.25)}
+.steps{display:flex;flex-direction:column;gap:14px}
+.step{display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:13px;padding:18px 20px;transition:.25s}
+.step:hover{border-color:var(--border-glow);transform:translateX(4px)}
+.step-num{flex-shrink:0;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:grid;place-items:center;font-weight:800;font-size:.9rem;box-shadow:0 4px 14px rgba(59,130,246,.35)}
+.step h4{font-size:.98rem;margin-bottom:3px}.step p{color:var(--muted);font-size:.87rem}
+.alert{border-radius:12px;padding:15px 18px;font-size:.9rem;display:flex;gap:12px;align-items:flex-start;margin:14px 0}
+.alert-warn{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.28);color:#fbbf24}
+.alert-info{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.28);color:#93c5fd}
+.alert-ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.28);color:#86efac}
+.url-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:16px 0}
+.url-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;transition:.25s}
+.url-card:hover{border-color:var(--primary)}
+.url-card .label{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.url-card .value{font-family:'JetBrains Mono',monospace;font-size:.88rem;color:var(--primary2);word-break:break-all}
+.apps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:16px 0}
+.app-chip{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 10px;text-align:center;transition:.2s;cursor:default}
+.app-chip:hover{border-color:var(--purple);background:rgba(167,139,250,.08);transform:scale(1.03)}
+.app-chip .code{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;color:var(--purple)}
+.app-chip .name{font-size:.78rem;color:var(--muted);margin-top:3px}
+/* ---------- Live catalog ---------- */
+.catalog-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:8px}
+.key-row{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}
+.key-input{flex:1;min-width:220px;background:#0a0e17;border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.85rem;outline:none;transition:.2s}
+.key-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+.btn-sm{padding:11px 18px;font-size:.85rem;border-radius:10px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:var(--bg3);border:1px solid var(--border);color:var(--muted);padding:10px 16px;border-radius:10px;font-size:.83rem;font-weight:650;cursor:pointer;font-family:inherit;transition:.2s;display:inline-flex;align-items:center;gap:7px}
+.tab:hover{color:var(--text);border-color:var(--primary)}
+.tab.active{background:rgba(59,130,246,.14);border-color:var(--primary);color:var(--primary2)}
+.tab .dot-live{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+.cat-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.select{background:#0a0e17;border:1px solid var(--border);border-radius:9px;padding:10px 12px;color:var(--text);font-family:inherit;font-size:.85rem;outline:none;min-width:190px}
+.select:focus{border-color:var(--primary)}
+.cat-status{font-size:.8rem;color:var(--muted);font-weight:600}
+.cat-status.err{color:#f87171}.cat-status.ok{color:var(--green2)}
+.catalog-body{min-height:120px}
+.cat-empty{text-align:center;color:var(--muted);font-size:.9rem;padding:36px 16px;border:1px dashed var(--border);border-radius:12px}
+.spinner{width:26px;height:26px;border:3px solid rgba(59,130,246,.2);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:26px auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cat-summary{font-size:.78rem;color:var(--muted);margin-bottom:10px;font-weight:600}
+.country-row{display:flex;align-items:center;gap:12px;background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:11px 14px;margin-bottom:8px;transition:.2s;cursor:pointer}
+.country-row:hover{border-color:var(--border-glow);background:var(--card-hover)}
+.country-row.static{cursor:default}
+.cr-flag{font-size:1.3rem;line-height:1;flex-shrink:0}
+.cr-main{flex:1;min-width:0}
+.cr-name{font-size:.9rem;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cr-code{font-size:.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.cr-price{font-size:.9rem;font-weight:800;color:var(--green2);flex-shrink:0}
+.cr-stock{font-size:.72rem;color:var(--muted);flex-shrink:0;min-width:64px;text-align:right}
+.cr-stock.out{color:#f87171}
+.acc-wrap{background:#0a0e17;border:1px solid var(--border);border-radius:12px;padding:14px;margin:2px 0 14px}
+.acc-head{font-size:.8rem;color:var(--muted);font-weight:650;margin-bottom:10px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.acc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:9px}
+.acc-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:11px 13px}
+.acc-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.acc-id{font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--muted)}
+.acc-price{font-size:.86rem;font-weight:800;color:var(--green2)}
+.acc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.acc-tag{font-size:.66rem;font-weight:700;padding:3px 7px;border-radius:5px;background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--border)}
+.acc-tag.on{background:rgba(34,197,94,.12);color:#4ade80;border-color:rgba(34,197,94,.25)}
+.acc-tag.warn{background:rgba(239,68,68,.12);color:#f87171;border-color:rgba(239,68,68,.25)}
+.acc-tag.prem{background:rgba(245,158,11,.12);color:#fbbf24;border-color:rgba(245,158,11,.25)}
+.acc-note{font-size:.7rem;color:var(--muted);margin-top:6px;font-family:'JetBrains Mono',monospace}
+footer{text-align:center;padding:48px 20px 60px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);margin-top:20px;position:relative;z-index:1}
+footer a{color:var(--primary2);text-decoration:none}
+footer .brand{font-weight:800;color:var(--text);font-size:1rem;margin-bottom:6px}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:700px){.hero{padding:48px 0 36px}.nav-links{display:none}.sec-title{font-size:1.25rem}}
+</style>
+</head>
+<body>
+<div class="bg-mesh"></div>
+<div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+<nav id="nav"><div class="nav-inner">
+<div class="logo"><div class="logo-badge">⚡</div>Aaditya Tg Store API</div>
+<div class="nav-links">
+<a href="#urls">URLs</a><a href="#catalog">Live Catalog</a><a href="#servers">Servers</a><a href="#auth">Auth</a>
+<a href="#endpoints">Endpoints</a><a href="#s1">Server 1</a><a href="#s2">Server 2</a><a href="#server3">Server 3</a>
+<a href="#examples">Examples</a><a href="#status">Status</a><a href="#clone">Clone Bots</a><a href="#python">Python Bot</a>
+</div></div></nav>
+<div class="wrap">
+<div class="hero">
+<div class="hero-badge"><span class="pulse-dot"></span>API Online · v1.6 · Live Catalog Enabled</div>
+<h1>Reseller API for<br><span class="grad">Telegram · WhatsApp · All App OTP</span></h1>
+<p>Sell under your own brand. One API key unlocks three servers — TG accounts, WhatsApp numbers, and OTP for 1000+ apps.</p>
+<div class="hero-actions">
+<a class="btn btn-primary" href="#quickstart">Get Started →</a>
+<a class="btn btn-ghost" href="#endpoints">All Endpoints</a>
+<a class="btn btn-ghost" href="#examples">Examples</a>
+</div></div>
+
+<section id="urls" class="reveal">
+<div class="sec-title"><span class="icon" style="background:rgba(34,211,238,.15)">🔗</span> API Base URLs</div>
+<p class="sec-desc">Admin se mili hui Base URL use karo. Neeche saare paths is Base ke relative hain.</p>
+<div class="url-grid">
+<div class="url-card"><div class="label">Production Base URL</div><div class="value">https://YOUR_DOMAIN.com</div></div>
+<div class="url-card"><div class="label">Rate Limit</div><div class="value">120 requests / minute</div></div>
+<div class="url-card"><div class="label">Health Check</div><div class="value">/health</div></div>
+<div class="url-card"><div class="label">This Docs Page</div><div class="value">/</div></div>
+<div class="url-card"><div class="label">JSON API Info</div><div class="value">/api</div></div>
+<div class="url-card"><div class="label">Auth Header</div><div class="value">X-API-Key</div></div>
+</div>
+<div class="alert alert-info"><span>ℹ️</span><div>
+<b>Full example URLs:</b><br>
+<code>https://YOUR_DOMAIN.com/v1/balance</code><br>
+<code>https://YOUR_DOMAIN.com/v1/buy</code><br>
+<code>https://YOUR_DOMAIN.com/v1/order/W-1234</code><br>
+<code>https://YOUR_DOMAIN.com/v1/countries?server=2</code><br>
+<code>https://YOUR_DOMAIN.com/v1/accounts?country_code=IN</code><br>
+<code>https://YOUR_DOMAIN.com/v1/countries?server=3&amp;service=ig</code><br>
+<code>https://YOUR_DOMAIN.com/v1/apps</code>
+</div></div>
+</section>
+
+<section id="servers" class="reveal">
+<div class="sec-title"><span class="icon" style="background:rgba(59,130,246,.15)">🖥️</span> Three Servers — Full Power</div>
+<p class="sec-desc">Har server alag service. Buy request mein <code>server</code> field se choose karo.</p>
+<div class="grid-3">
+<div class="card server-card"><span class="badge badge-s1">SERVER 1</span>
+<h3>✈️ Cheap TG Accounts</h3>
+<p>Ready Telegram accounts. Number + login code. Country code se buy (IN, US, RU…). Refund nahi hota.</p>
+<div class="meta"><span class="tag">Telegram</span><span class="tag">Full Account</span><span class="tag">Login Code</span><span class="tag">country_code</span></div></div>
+<div class="card server-card"><span class="badge badge-s2">SERVER 2</span>
+<h3>💚 WhatsApp OTP</h3>
+<p>Virtual WhatsApp numbers. OTP receive. Cancel pe automatic full refund.</p>
+<div class="meta"><span class="tag">WhatsApp</span><span class="tag">SMS / OTP</span><span class="tag">Refundable</span><span class="tag">country_id</span></div></div>
+<div class="card server-card"><span class="badge badge-s3">SERVER 3</span>
+<h3>🌐 All App OTP</h3>
+<p>1000+ apps — Telegram, Instagram, Google, Facebook, TikTok, Uber, Amazon, Discord…</p>
+<div class="meta"><span class="tag">Any App</span><span class="tag">SMS / OTP</span><span class="tag">Refundable</span><span class="tag">service + country</span></div></div>
+</div></section>
+
+<section id="catalog" class="reveal">
+<div class="sec-title"><span class="icon" style="background:rgba(34,197,94,.15)">📡</span> Live Catalog — Bot Jaisa Data</div>
+<p class="sec-desc">Jaisa Telegram bot ke <b>Server 1 / Server 2 / Server 3</b> menus mein country, account aur price dikhte hain — bilkul waisa hi live data yahan. Apni API key daalo, tab choose karo, aur real-time price + stock dekho. Server 1 mein kisi country pe click karke individual accounts bhi dekh sakte ho.</p>
+<div class="catalog-box">
+  <div class="key-row">
+    <input id="apiKey" class="key-input" type="password" placeholder="ats_your_key_here" autocomplete="off" spellcheck="false">
+    <button id="saveKey" class="btn btn-primary btn-sm">Load Catalog</button>
+    <button id="clearKey" class="btn btn-ghost btn-sm">Clear</button>
+  </div>
+  <div class="tabs">
+    <button class="tab active" data-server="1"><span class="dot-live"></span>Server 1 · TG Accounts</button>
+    <button class="tab" data-server="2"><span class="dot-live"></span>Server 2 · WhatsApp</button>
+    <button class="tab" data-server="3"><span class="dot-live"></span>Server 3 · All Apps</button>
+  </div>
+  <div class="cat-toolbar">
+    <select id="appSelect" class="select" style="display:none"></select>
+    <button id="refreshBtn" class="btn btn-ghost btn-sm">↻ Refresh</button>
+    <span id="catalogStatus" class="cat-status">Key save nahi hai</span>
+  </div>
+  <div id="catalogBody" class="catalog-body">
+    <div class="cat-empty">API key daal ke <b>Load Catalog</b> dabao — countries, prices aur stock live dikhenge.</div>
+  </div>
+</div>
+<div class="alert alert-info" style="margin-top:16px"><span>ℹ️</span><div>
+Ye page sirf <code>GET</code> endpoints use karta hai (read-only). Key aapke browser ke <code>localStorage</code> mein rehti hai, kahin bheji nahi jaati. Buy karne ke liye neeche <a href="#examples" style="color:var(--primary2)">Examples</a> dekho.
+</div></div>
+</section>
+
+<section id="auth" class="reveal">
+<div class="sec-title"><span class="icon" style="background:rgba(245,158,11,.15)">🔑</span> Authentication</div>
+<p class="sec-desc">Har request mein API key zaroori. Balance usi reseller account se cut hota hai.</p>
+<div class="auth-box"><h3>Required Header</h3>
+<p style="color:var(--muted);font-size:.9rem;margin-bottom:12px">Har API call ke saath:</p>
+<div class="code-block"><div class="code-header"><div class="left"><div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div><span>HTTP Header</span></div>
+<button class="copy-btn" onclick="copyText(this,'X-API-Key: ats_your_key_here')">Copy</button></div>
+<pre>X-API-Key: ats_your_key_here</pre></div>
+<p style="color:var(--muted);font-size:.88rem;margin-top:10px">Alternative: <code>Authorization: Bearer ats_your_key_here</code></p></div>
+<div class="alert alert-warn"><span>⚠️</span><div><b>Security:</b> API key public mat share karo. Leak pe turant admin se revoke karwao.</div></div>
+</section>
+
+<section id="quickstart" class="reveal">
+<div class="sec-title"><span class="icon" style="background:rgba(34,197,94,.15)">🚀</span> Quick Start — 4 Steps</div>
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div><h4>API Key + Base URL lo</h4><p>Admin bot se key generate karke dega. Base URL isi page par upar likha hai.</p></div></div>
+<div class="step"><div class="step-num">2</div><div><h4>Balance check</h4><p><code>GET /v1/balance</code> — INR balance. Pehle se balance hona chahiye.</p></div></div>
+<div class="step"><div class="step-num">3</div><div><h4>Buy number / account</h4><p><code>POST /v1/buy</code> — server + country. Turant phone milta hai.</p></div></div>
+<div class="step"><div class="step-num">4</div><div><h4>OTP / Login code</h4><p><code>GET /v1/order/{id}</code> — har 4–6 sec poll jab tak <span class="status st-done">DONE</span> na ho.</p></div></div>
+</div></section>
+
+<section id="endpoints" class="reveal">
+<div class="sec-title"><span class="icon" style="background:rgba(167,139,250,.15)">📡</span> Complete Endpoint Reference</div>
+<p class="sec-desc">Saare endpoints. Response hamesha JSON.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Method</th><th>Full Path</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><span class="method m-get">GET</span></td><td><code>/v1/balance</code></td><td>Current balance (INR)</td></tr>
+<tr><td><span class="method m-get">GET</span></td><td><code>/v1/services</code></td><td>Servers list (1, 2, 3)</td></tr>
+<tr><td><span class="method m-get">GET</span></td><td><code>/v1/countries?server=1</code></td><td>Server 1 countries + price + stock</td></tr>
+<tr><td><span class="method m-get">GET</span></td><td><code>/v1/accounts?country_code=IN</code></td><td>Server 1 — individual TG accounts (bot jaisa list)</td></tr>
+<tr><td><span class="method m-get">GET</span></td><td><code>/v1/countries?server=2</code></td><td>Server 2 WhatsApp countries + price</td></tr>
+<tr><td><span class="method m-get">GET</span></td><td><code>/v1/countries?server=3&amp;service=ig</code></td><td>Server 3 countries for specific app</td></tr>
+<tr><td><span class="method m-get">GET</span></td><td><code>/v1/apps</code></td><td>Server 3 — all apps (tg, ig, go, wa…)</td></tr>
+<tr><td><span class="method m-post">POST</span></td><td><code>/v1/buy</code></td><td>Purchase number / TG account</td></tr>
+<tr><td><span class="method m-get">GET</span></td><td><code>/v1/order/{order_id}</code></td><td>Status + OTP / login code</td></tr>
+<tr><td><span class="method m-get">GET</span></td><td><code>/v1/orders?limit=20</code></td><td>Your recent orders</td></tr>
+<tr><td><span class="method m-post">POST</span></td><td><code>/v1/cancel/{order_id}</code></td><td>Cancel + refund (Server 2 &amp; 3)</td></tr>
+<tr><td><span class="method m-post">POST</span></td><td><code>/v1/retry/{order_id}</code></td><td>Request new SMS on same number</td></tr>
+<tr><td><span class="method m-get">GET</span></td><td><code>/v1/session?order_id=</code></td><td>Server 1 — Telethon session string of the bought account</td></tr>
+</tbody></table></div>
+</section>
+
+<section class="reveal">
+<div class="sec-title"><span class="icon" style="background:rgba(34,211,238,.15)">📋</span> Buy Request Body</div>
+<div class="table-wrap"><table>
+<thead><tr><th>Field</th><th>Type</th><th>Required For</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><code>server</code></td><td>integer</td><td>Always</td><td><b>1</b> TG Accounts · <b>2</b> WhatsApp · <b>3</b> All App OTP</td></tr>
+<tr><td><code>country_code</code></td><td>string</td><td>Server 1</td><td>ISO: <code>IN</code>, <code>US</code>, <code>RU</code>, <code>ID</code>, <code>PH</code>…</td></tr>
+<tr><td><code>country</code></td><td>integer</td><td>Server 2 &amp; 3</td><td>Country ID from <code>/v1/countries</code></td></tr>
+<tr><td><code>service</code></td><td>string</td><td>Server 3</td><td>App code: <code>tg</code>, <code>ig</code>, <code>go</code>, <code>wa</code>, <code>fb</code>…</td></tr>
+<tr><td><code>max_price</code></td><td>float</td><td>Optional</td><td>Max price in INR you are ready to pay</td></tr>
+<tr><td><code>item_id</code></td><td>string</td><td>Optional S1</td><td>Specific account / item id (store listing se)</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="s1" class="reveal">
+<div class="sec-title"><span class="icon" style="background:rgba(59,130,246,.15)">✈️</span> Server 1 — Cheap TG Accounts (Detail)</div>
+<p class="sec-desc">Bot ke Server 1 menu ka poora mirror: country list → account list (filters ke saath) → buy → login code → Telethon session. Yahan har step ka exact request aur response diya hai.</p>
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div><h4>Countries + stock dekho</h4><p><code>GET /v1/countries?server=1</code> — har country ka <code>country_code</code> (ISO), <code>price</code> (INR) aur <code>stock</code> milta hai. Stock 0 wale automatically hide hote hain.</p></div></div>
+<div class="step"><div class="step-num">2</div><div><h4>Us country ke accounts dekho</h4><p><code>GET /v1/accounts?server=1&amp;country_code=IN</code> — bot jaisa account list. Filters: <code>category</code> (push / autoreg / premium), <code>spam</code> (yes/no), <code>premium</code> (yes/no), <code>email</code> (yes/no), <code>limit</code> (1–50).</p></div></div>
+<div class="step"><div class="step-num">3</div><div><h4>Buy karo</h4><p><code>POST /v1/buy</code> with <code>{"server":1,"country_code":"IN"}</code> — random best account. Ya specific account ke liye <code>item_id</code> add karo (jo <code>/v1/accounts</code> se mila).</p></div></div>
+<div class="step"><div class="step-num">4</div><div><h4>Login code lo</h4><p><code>GET /v1/order/T-xxxx</code> — phone pe Telegram login code bhejo, phir har 4–6 sec poll karo jab tak <code>status</code> = <code>DONE</code> na ho.</p></div></div>
+<div class="step"><div class="step-num">5</div><div><h4>Session string lo (optional)</h4><p><code>GET /v1/session?order_id=T-xxxx</code> — bought account ka ready Telethon <code>StringSession</code>. Apne bot mein directly use karo.</p></div></div>
+</div>
+
+<h3 style="margin:26px 0 10px;font-size:1.05rem;font-weight:700">Countries response</h3>
+<div class="code-block"><div class="code-header"><div class="left"><div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div><span>GET /v1/countries?server=1</span></div>
+<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre>{
+  <span class="key">"success"</span>: <span class="kw">true</span>,
+  <span class="key">"server"</span>: <span class="num">1</span>,
+  <span class="key">"count"</span>: <span class="num">2</span>,
+  <span class="key">"countries"</span>: [
+    { <span class="key">"country_code"</span>: <span class="str">"IN"</span>, <span class="key">"name"</span>: <span class="str">"India"</span>, <span class="key">"flag"</span>: <span class="str">"🇮🇳"</span>, <span class="key">"price"</span>: <span class="num">45.0</span>, <span class="key">"stock"</span>: <span class="num">128</span> },
+    { <span class="key">"country_code"</span>: <span class="str">"US"</span>, <span class="key">"name"</span>: <span class="str">"United States"</span>, <span class="key">"flag"</span>: <span class="str">"🇺🇸"</span>, <span class="key">"price"</span>: <span class="num">38.0</span>, <span class="key">"stock"</span>: <span class="num">54</span> }
+  ]
+}</pre></div>
+
+<h3 style="margin:26px 0 10px;font-size:1.05rem;font-weight:700">Accounts response</h3>
+<div class="code-block"><div class="code-header"><div class="left"><div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div><span>GET /v1/accounts?server=1&amp;country_code=IN&amp;limit=20</span></div>
+<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre>{
+  <span class="key">"success"</span>: <span class="kw">true</span>,
+  <span class="key">"server"</span>: <span class="num">1</span>,
+  <span class="key">"country_code"</span>: <span class="str">"IN"</span>,
+  <span class="key">"count"</span>: <span class="num">2</span>,
+  <span class="key">"accounts"</span>: [
+    {
+      <span class="key">"account_id"</span>: <span class="str">"a1b2c3"</span>, <span class="key">"price"</span>: <span class="num">42.0</span>,
+      <span class="key">"premium"</span>: <span class="kw">false</span>, <span class="key">"premium_until"</span>: <span class="str">""</span>,
+      <span class="key">"spam_block"</span>: <span class="kw">false</span>, <span class="key">"twofa"</span>: <span class="kw">true</span>,
+      <span class="key">"email"</span>: <span class="str">"a***@gmail.com"</span>, <span class="key">"channels"</span>: <span class="num">3</span>,
+      <span class="key">"groups"</span>: <span class="num">11</span>, <span class="key">"admins"</span>: <span class="num">0</span>,
+      <span class="key">"origin"</span>: <span class="str">"IN"</span>, <span class="key">"uploaded"</span>: <span class="str">"2024-11-01"</span>,
+      <span class="key">"last_seen"</span>: <span class="str">"2024-11-18"</span>
+    }
+  ]
+}</pre></div>
+<div class="alert alert-warn"><span>⚠️</span><div><b>No refund:</b> Server 1 accounts buy hone ke baad final hain — cancel/refund nahi milta. Isliye buy se pehle country, price aur account details (2FA, spam) zaroor check karo.</div></div>
+</section>
+
+<section id="s2" class="reveal">
+<div class="sec-title"><span class="icon" style="background:rgba(34,197,94,.15)">💚</span> Server 2 — WhatsApp OTP (Detail)</div>
+<p class="sec-desc">Bot ke Server 2 menu jaisa: WhatsApp country list with price + stock, number buy, OTP poll, aur cancel pe full refund.</p>
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div><h4>WhatsApp countries</h4><p><code>GET /v1/countries?server=2</code> — har row mein <code>id</code> (country id), <code>country_code</code>, <code>price</code>, <code>stock</code>. Buy mein <code>id</code> hi <code>country</code> field mein jaata hai.</p></div></div>
+<div class="step"><div class="step-num">2</div><div><h4>Number buy karo</h4><p><code>POST /v1/buy</code> with <code>{"server":2,"country":22}</code>. Turant <code>phone</code> aur <code>order_id</code> (<code>W-...</code>) milta hai.</p></div></div>
+<div class="step"><div class="step-num">3</div><div><h4>OTP lo</h4><p>WhatsApp mein number daalo, OTP request karo, phir <code>GET /v1/order/W-xxxx</code> poll karo.</p></div></div>
+<div class="step"><div class="step-num">4</div><div><h4>Cancel / Retry</h4><p>Code na aaye to <code>POST /v1/cancel/W-xxxx</code> — full refund. Naya SMS chahiye to <code>POST /v1/retry/W-xxxx</code> (sirf <code>WAIT_RETRY</code> pe).</p></div></div>
+</div>
+<h3 style="margin:26px 0 10px;font-size:1.05rem;font-weight:700">Countries response</h3>
+<div class="code-block"><div class="code-header"><div class="left"><div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div><span>GET /v1/countries?server=2</span></div>
+<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre>{
+  <span class="key">"success"</span>: <span class="kw">true</span>, <span class="key">"server"</span>: <span class="num">2</span>, <span class="key">"count"</span>: <span class="num">1</span>,
+  <span class="key">"countries"</span>: [
+    { <span class="key">"id"</span>: <span class="num">22</span>, <span class="key">"country_code"</span>: <span class="str">"IN"</span>, <span class="key">"name"</span>: <span class="str">"India"</span>,
+      <span class="key">"flag"</span>: <span class="str">"🇮🇳"</span>, <span class="key">"price"</span>: <span class="num">18.0</span>, <span class="key">"stock"</span>: <span class="num">340</span> }
+  ]
+}</pre></div>
+</section>
+
+<section id="server3" class="reveal">
+<div class="sec-title"><span class="icon" style="background:rgba(167,139,250,.15)">🌐</span> Server 3 — Popular Apps</div>
+<p class="sec-desc">1000+ apps. Full list: <code>GET /v1/apps</code>. Popular codes:</p>
+<div class="apps-grid">
+<div class="app-chip"><div class="code">tg</div><div class="name">Telegram</div></div>
+<div class="app-chip"><div class="code">wa</div><div class="name">WhatsApp</div></div>
+<div class="app-chip"><div class="code">ig</div><div class="name">Instagram</div></div>
+<div class="app-chip"><div class="code">fb</div><div class="name">Facebook</div></div>
+<div class="app-chip"><div class="code">go</div><div class="name">Google</div></div>
+<div class="app-chip"><div class="code">tw</div><div class="name">Twitter / X</div></div>
+<div class="app-chip"><div class="code">ds</div><div class="name">Discord</div></div>
+<div class="app-chip"><div class="code">vi</div><div class="name">Viber</div></div>
+<div class="app-chip"><div class="code">ot</div><div class="name">Any Other</div></div>
+<div class="app-chip"><div class="code">am</div><div class="name">Amazon</div></div>
+<div class="app-chip"><div class="code">ub</div><div class="name">Uber</div></div>
+<div class="app-chip"><div class="code">lf</div><div class="name">TikTok</div></div>
+</div>
+<div class="alert alert-info"><span>ℹ️</span><div>
+Full list: <code>GET /v1/apps</code><br>
+Countries: <code>GET /v1/countries?server=3&amp;service=ig</code><br>
+Buy: <code>{"server":3,"service":"ig","country":22}</code>
+</div></div>
+
+<h3 style="margin:26px 0 10px;font-size:1.05rem;font-weight:700">Server 3 flow</h3>
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div><h4>App choose karo</h4><p><code>GET /v1/apps</code> — saare apps ka <code>code</code> + <code>name</code>. Bot ke Server 3 menu jaisa hi list.</p></div></div>
+<div class="step"><div class="step-num">2</div><div><h4>Us app ke countries</h4><p><code>GET /v1/countries?server=3&amp;service=ig</code> — har row mein <code>id</code>, <code>price</code>, <code>stock</code>.</p></div></div>
+<div class="step"><div class="step-num">3</div><div><h4>Buy karo</h4><p><code>POST /v1/buy</code> with <code>{"server":3,"service":"ig","country":22}</code>.</p></div></div>
+<div class="step"><div class="step-num">4</div><div><h4>OTP lo</h4><p><code>GET /v1/order/A-xxxx</code> poll karo. Cancel pe full refund, retry se naya SMS.</p></div></div>
+</div>
+<h3 style="margin:26px 0 10px;font-size:1.05rem;font-weight:700">Apps + countries response</h3>
+<div class="code-block"><div class="code-header"><div class="left"><div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div><span>GET /v1/apps</span></div>
+<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre>{
+  <span class="key">"success"</span>: <span class="kw">true</span>, <span class="key">"count"</span>: <span class="num">2</span>,
+  <span class="key">"apps"</span>: [
+    { <span class="key">"code"</span>: <span class="str">"ig"</span>, <span class="key">"name"</span>: <span class="str">"Instagram"</span> },
+    { <span class="key">"code"</span>: <span class="str">"tg"</span>, <span class="key">"name"</span>: <span class="str">"Telegram"</span> }
+  ]
+}</pre></div>
+<div class="code-block"><div class="code-header"><div class="left"><div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div><span>GET /v1/countries?server=3&amp;service=ig</span></div>
+<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre>{
+  <span class="key">"success"</span>: <span class="kw">true</span>, <span class="key">"server"</span>: <span class="num">3</span>, <span class="key">"count"</span>: <span class="num">1</span>,
+  <span class="key">"countries"</span>: [
+    { <span class="key">"id"</span>: <span class="num">22</span>, <span class="key">"country_code"</span>: <span class="str">"IN"</span>, <span class="key">"name"</span>: <span class="str">"India"</span>,
+      <span class="key">"flag"</span>: <span class="str">"🇮🇳"</span>, <span class="key">"price"</span>: <span class="num">12.5</span>, <span class="key">"stock"</span>: <span class="num">88</span> }
+  ]
+}</pre></div>
+</section>
+
+<section id="examples" class="reveal">
+<div class="sec-title"><span class="icon" style="background:rgba(244,114,182,.15)">💻</span> Ready-to-Use Examples</div>
+<p class="sec-desc">Base URL pehle se bhara hua hai. Sirf apni API key replace karo.</p>
+
+<h3 style="margin:26px 0 10px;font-size:1.08rem;font-weight:700">1. Check Balance</h3>
+<div class="code-block"><div class="code-header"><div class="left"><div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div><span>cURL · GET /v1/balance</span></div>
+<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre>curl -X GET "https://YOUR_DOMAIN.com/v1/balance" \
+  -H "X-API-Key: ats_your_key_here"</pre></div>
+<div class="code-block"><div class="code-header"><div class="left"><div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div><span>Response</span></div></div>
+<pre>{
+  <span class="key">"success"</span>: <span class="kw">true</span>,
+  <span class="key">"balance"</span>: <span class="num">1250.50</span>,
+  <span class="key">"currency"</span>: <span class="str">"INR"</span>,
+  <span class="key">"user_id"</span>: <span class="num">123456789</span>
+}</pre></div>
+
+<h3 style="margin:30px 0 10px;font-size:1.08rem;font-weight:700">2. Server 1 — Buy TG Account (India)</h3>
+<div class="code-block"><div class="code-header"><div class="left"><div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div><span>cURL · POST /v1/buy</span></div>
+<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre>curl -X POST "https://YOUR_DOMAIN.com/v1/buy" \
+  -H "X-API-Key: ats_your_key_here" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "server": 1,
+    "country_code": "IN"
+  }'</pre></div>
+
+<div class="code-block"><div class="code-header"><div class="left"><div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div><span>Buy Response</span></div></div>
+<pre>{
+  "success": true,
+  "order_id": "T-ORD-1234-1700000000",
+  "phone": "919876543210",
+  "price": 45.0,
+  "server": 1,
+  "country": "India",
+  "status": "WAIT_CODE",
+  "password": "2fa-password-if-any"
+}</pre></div>
+
+<h3 style="margin:30px 0 10px;font-size:1.08rem;font-weight:700">3. Server 2 — Buy WhatsApp Number</h3>
+<div class="code-block"><div class="code-header"><div class="left"><div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div><span>cURL · POST /v1/buy</span></div>
+<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre>curl -X POST "https://YOUR_DOMAIN.com/v1/buy" \
+  -H "X-API-Key: ats_your_key_here" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "server": 2,
+    "country": 22
+  }'</pre></div>
+
+<h3 style="margin:30px 0 10px;font-size:1.08rem;font-weight:700">4. Server 3 — Instagram OTP</h3>
+<div class="code-block"><div class="code-header"><div class="left"><div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div><span>cURL · POST /v1/buy</span></div>
+<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre>curl -X POST "https://YOUR_DOMAIN.com/v1/buy" \
+  -H "X-API-Key: ats_your_key_here" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "server": 3,
+    "service": "ig",
+    "country": 22
+  }'</pre></div>
+
+<h3 style="margin:30px 0 10px;font-size:1.08rem;font-weight:700">5. Get OTP / Login Code</h3>
+<div class="code-block"><div class="code-header"><div class="left"><div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div><span>cURL · GET /v1/order/{id}</span></div>
+<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre>curl -X GET "https://YOUR_DOMAIN.com/v1/order/W-1234" \
+  -H "X-API-Key: ats_your_key_here"</pre></div>
+<div class="code-block"><div class="code-header"><div class="left"><div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div><span>When code arrives</span></div></div>
+<pre>{
+  <span class="key">"success"</span>: <span class="kw">true</span>,
+  <span class="key">"order_id"</span>: <span class="str">"W-1234"</span>,
+  <span class="key">"phone"</span>: <span class="str">"919876543210"</span>,
+  <span class="key">"code"</span>: <span class="str">"483921"</span>,
+  <span class="key">"status"</span>: <span class="str">"DONE"</span>,
+  <span class="key">"price"</span>: <span class="num">45.00</span>,
+  <span class="key">"server"</span>: <span class="num">1</span>
+}</pre></div>
+
+<h3 style="margin:30px 0 10px;font-size:1.08rem;font-weight:700">6. Python Full Flow</h3>
+<div class="code-block"><div class="code-header"><div class="left"><div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div><span>Python 3</span></div>
+<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="kw">import</span> requests, time
+
+API = <span class="str">"https://YOUR_DOMAIN.com"</span>
+KEY = <span class="str">"ats_your_key_here"</span>
+H = {<span class="str">"X-API-Key"</span>: KEY, <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span>}
+
+print(requests.get(f<span class="str">"{API}/v1/balance"</span>, headers=H).json())
+
+countries = requests.get(f<span class="str">"{API}/v1/countries"</span>, params={<span class="str">"server"</span>: <span class="num">2</span>}, headers=H).json()
+print(countries[<span class="str">"countries"</span>][:3])
+
+buy = requests.post(f<span class="str">"{API}/v1/buy"</span>, headers=H, json={
+    <span class="str">"server"</span>: <span class="num">2</span>,
+    <span class="str">"country"</span>: <span class="num">22</span>
+}).json()
+print(<span class="str">"Phone:"</span>, buy.get(<span class="str">"phone"</span>))
+order_id = buy[<span class="str">"order_id"</span>]
+
+<span class="kw">for</span> _ <span class="kw">in</span> range(<span class="num">30</span>):
+    time.sleep(<span class="num">5</span>)
+    st = requests.get(f<span class="str">"{API}/v1/order/{order_id}"</span>, headers=H).json()
+    <span class="kw">if</span> st[<span class="str">"status"</span>] == <span class="str">"DONE"</span>:
+        print(<span class="str">"OTP:"</span>, st[<span class="str">"code"</span>])
+        <span class="kw">break</span>
+    print(<span class="str">"Status:"</span>, st[<span class="str">"status"</span>])</pre></div>
+</section>
+
+<section id="status" class="reveal">
+<div class="sec-title"><span class="icon" style="background:rgba(34,197,94,.15)">📊</span> Order Status Values</div>
+<div class="grid-2">
+<div class="card"><span class="status st-wait">WAIT_CODE</span><p style="margin-top:12px;color:var(--muted);font-size:.9rem">Number mil gaya. OTP wait. <code>/v1/order/{id}</code> poll karo.</p></div>
+<div class="card"><span class="status st-retry">WAIT_RETRY</span><p style="margin-top:12px;color:var(--muted);font-size:.9rem">Code aa chuka. Naya SMS: <code>POST /v1/retry/{id}</code></p></div>
+<div class="card"><span class="status st-done">DONE</span><p style="margin-top:12px;color:var(--muted);font-size:.9rem">Success! <code>code</code> field mein OTP / login code.</p></div>
+<div class="card"><span class="status st-cancel">CANCELLED</span><p style="margin-top:12px;color:var(--muted);font-size:.9rem">Cancel + refund (Server 2 &amp; 3). Server 1 pe strictly no refund.</p></div>
+</div></section>
+
+<section class="reveal">
+<div class="sec-title"><span class="icon" style="background:rgba(239,68,68,.15)">⚠️</span> HTTP Error Codes</div>
+<div class="table-wrap"><table>
+<thead><tr><th>Code</th><th>Meaning</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td><code>401</code></td><td>Invalid / missing API key</td><td>Header check</td></tr>
+<tr><td><code>402</code></td><td>Insufficient balance</td><td>Add funds</td></tr>
+<tr><td><code>403</code></td><td>Key disabled / banned</td><td>Contact admin</td></tr>
+<tr><td><code>400</code></td><td>Bad request / no stock</td><td>Fix params</td></tr>
+<tr><td><code>404</code></td><td>Order not found</td><td>Check order_id</td></tr>
+<tr><td><code>429</code></td><td>Too many requests / order already in progress</td><td>Wait a few seconds, retry</td></tr>
+<tr><td><code>502</code></td><td>Provider error</td><td>Retry later</td></tr>
+<tr><td><code>503</code></td><td>Provider not configured</td><td>Contact admin</td></tr>
+</tbody></table></div>
+</section>
+
+<section class="reveal">
+<div class="sec-title"><span class="icon" style="background:rgba(245,158,11,.15)">📌</span> Important Notes</div>
+<div class="grid-2">
+<div class="card"><h3 style="font-size:1rem;margin-bottom:8px">💰 Pricing</h3><p style="color:var(--muted);font-size:.9rem">All prices <b>INR</b>. Deduct on successful buy. Auto-refund on provider fail.</p></div>
+<div class="card"><h3 style="font-size:1rem;margin-bottom:8px">🔄 Cancel</h3><p style="color:var(--muted);font-size:.9rem">Server 2 &amp; 3: cancel + full refund while WAIT. Server 1: strictly no refund, buy ke baad final.</p></div>
+<div class="card"><h3 style="font-size:1rem;margin-bottom:8px">⏱️ Polling</h3><p style="color:var(--muted);font-size:.9rem">Poll every 4–6 sec. OTP usually 10–60 sec after user requests code in app.</p></div>
+<div class="card"><h3 style="font-size:1rem;margin-bottom:8px">🔐 Security</h3><p style="color:var(--muted);font-size:.9rem">Always HTTPS in production. Keep key secret. Revoke on leak.</p></div>
+</div></section>
+
+<section id="clone" class="reveal">
+<div class="sec-title"><span class="icon" style="background:rgba(139,92,246,.15)">🤖</span> Clone Bots — Isi API Se Chalao</div>
+<p class="sec-desc">Aapke clone bots ko alag provider key ki zaroorat nahi. Clone bot ki settings me <b>Server 1 / 2 / 3 ka URL + <code>ats_</code> key</b> daal do — wo automatically <code>/v1/*</code> endpoints use karega, aur paisa aapke main account se cut hoga.</p>
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div><h4>Main bot me key banao</h4><p>Admin → <b>API Keys</b> → jis user ka balance use hoga uske liye key banao (ya <code>/apikey create &lt;user_id&gt; 30</code>). Key sirf ek baar dikhti hai — turant copy karo.</p></div></div>
+<div class="step"><div class="step-num">2</div><div><h4>Clone bot me Server 1 set karo</h4><p>Clone ke Admin panel me <b>Server 1 API URL</b> = <code>https://YOUR_DOMAIN.com</code> aur <b>Server 1 API Key</b> = <code>ats_...</code>. Bas — clone ab LZT ki jagah aapki API use karega.</p></div></div>
+<div class="step"><div class="step-num">3</div><div><h4>Server 2 &amp; 3 bhi same tarah</h4><p>Clone ki <b>Server 2 API Key</b> / <b>Server 3 API Key</b> me bhi wahi <code>ats_</code> key daalo. Key <code>ats_</code> se shuru hote hi clone WhatsApp/All-App OTP bhi <code>/v1</code> se lega (Tiger key ki zaroorat nahi). URL me sirf <code>https://YOUR_DOMAIN.com</code> daalo \u2014 purana <code>/stubs/handler_api.php</code> khud hat jaata hai.</p></div></div>
+<div class="step"><div class="step-num">4</div><div><h4>Margin apna rakho</h4><p>Clone ka apna margin (Server 1/2/3 margin setting) reseller price ke <b>upar</b> lagta hai. Yani aapko API ka price dena hai, customer ko clone ka price.</p></div></div>
+</div>
+<div class="grid-2" style="margin-top:18px">
+<div class="card"><h3 style="font-size:1rem;margin-bottom:8px">🔑 Har clone ko alag key do</h3><p style="color:var(--muted);font-size:.9rem">Alag key = alag balance, alag <b>120 req/min</b> limit, aur orders sirf usi key ke owner ko dikhte hain. Ek key sabme share karne se rate limit jaldi khatam hogi.</p></div>
+<div class="card"><h3 style="font-size:1rem;margin-bottom:8px">🧾 Order ownership</h3><p style="color:var(--muted);font-size:.9rem">Har order usi user ka hota hai jiski key se buy hua. Dusri key se <code>/v1/order/{id}</code> karo to <code>404</code> milega — data leak nahi hota.</p></div>
+<div class="card"><h3 style="font-size:1rem;margin-bottom:8px">💾 Server 1 session</h3><p style="color:var(--muted);font-size:.9rem">Clone ab <code>GET /v1/session?order_id=T-...</code> se Telethon string session le sakta hai (pehli baar DB me cache ho jaata hai).</p></div>
+<div class="card"><h3 style="font-size:1rem;margin-bottom:8px">⚠️ Server 1 no refund</h3><p style="color:var(--muted);font-size:.9rem">Clone me Server 1 pe confirm step rakho. Server 2 &amp; 3 pe cancel = full refund, retry = naya SMS.</p></div>
+</div>
+<div class="alert alert-warn" style="margin-top:16px"><span>⚠️</span><div><b>Ek hi key ko bahut saare clones me mat lagao.</b> 120 req/min per key hota hai — 3-4 clones ke users milkar limit cross kar denge. Har clone (ya har bada reseller) ke liye alag key banao.</div></div>
+
+<h3 style="margin:30px 0 10px;font-size:1.08rem;font-weight:700">Server 1 — Clone me bhi full account list + details</h3>
+<p class="sec-desc" style="margin-bottom:14px">Clone bot Server 1 pe sirf country price nahi dikhata. Wahi <code>/v1/accounts</code> call karta hai, isliye user ko bilkul main bot jaisa experience milta hai:</p>
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div><h4>Country → account list</h4><p>Clone har account ka <code>account_id</code>, price, 2FA, spam, premium, email, channels, groups aur admins dikhata hai — same fields jo <code>/v1/accounts</code> return karta hai.</p></div></div>
+<div class="step"><div class="step-num">2</div><div><h4>Account details page</h4><p>Kisi account pe tap karo to Origin, Resale Origin, Uploaded, Last Seen, Premium (expiry ke saath), Spam, 2FA aur Email — sab main bot jaisa.</p></div></div>
+<div class="step"><div class="step-num">3</div><div><h4>Specific account buy</h4><p>Buy pe clone <code>POST /v1/buy</code> me <code>item_id</code> bhejta hai, isliye jo account user ne dekha wahi milta hai. Random buy ke liye <code>item_id</code> nahi bhejta.</p></div></div>
+<div class="step"><div class="step-num">4</div><div><h4>Bulk buy bhi kaam karta hai</h4><p>Clone Bulk Buy me har account ke liye alag <code>/v1/buy</code> call karta hai — charge per delivered account, bilkul main bot jaisa.</p></div></div>
+</div>
+<div class="alert alert-info" style="margin-top:16px"><span>💡</span><div><b>Kuch extra set nahi karna:</b> clone me sirf <b>Server 1 API URL</b> = <code>https://YOUR_DOMAIN.com</code> aur <b>Server 1 API Key</b> = <code>ats_...</code> daalo. Account list, details aur item_id buy automatically isi API se chalenge.</div></div>
+
+<h3 style="margin:30px 0 10px;font-size:1.08rem;font-weight:700">Server 2 &amp; 3 — API Test ka "Not Found" fix</h3>
+<p class="sec-desc" style="margin-bottom:14px">Pehle clone Server 2/3 pe <code>https://example.com/stubs/handler_api.php</code> call karta tha aur <b>Check failed: Error: Not Found</b> aata tha. Ab clone key dekhta hai: <code>ats_</code> key milte hi wo seedha main store ke <code>/v1</code> par jaata hai. Agar URL abhi bhi purana provider default (<code>api.tiger-sms.com</code> / <code>api.lzt.market</code>) hai to clone khud usse ignore karke main store URL use kar leta hai — isliye teeno server ek saath kaam karte hain.</p>
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div><h4>Sirf key daalna kaafi hai</h4><p><b>Server 2 API Key</b> / <b>Server 3 API Key</b> me <code>ats_...</code> daalo. URL khaali ho, <code>https://YOUR_DOMAIN.com</code> ho, ya purana <code>api.tiger-sms.com/stubs/handler_api.php</code> ho — clone reseller key dekh kar apne aap main store ka sahi base URL chun leta hai. <code>/stubs/handler_api.php</code> aur <code>/v1</code> suffix bhi automatically strip hote hain.</p></div></div>
+<div class="step"><div class="step-num">2</div><div><h4>Teeno server ek hi API se</h4><p>Server 1 <code>/v1/accounts</code> + <code>/v1/buy</code>, Server 2 <code>/v1/countries?server=2</code> + <code>/v1/buy</code>, Server 3 <code>/v1/apps</code> + <code>/v1/countries?server=3&amp;service=...</code> use karta hai. Countries, apps, prices, buy, status, cancel, retry — sab <code>/v1</code> se, Tiger key ki zaroorat nahi.</p></div></div>
+<div class="step"><div class="step-num">3</div><div><h4>Test API me mode dikhega</h4><p>Ab test result me <b>Mode: Reseller API (main store /v1)</b> aur <b>API Wallet: ₹...</b> aayega. Agar <b>Provider balance</b> likha aaye to matlab clone abhi bhi Tiger host use kar raha hai — URL/key dobara check karo.</p></div></div>
+<div class="step"><div class="step-num">4</div><div><h4>Server 3 key optional</h4><p>Server 3 ki key khaali chhod do to wo Server 2 ki key use karega. Server 3 ke countries pehle app (<code>/v1/apps</code>) se liye jaate hain, phir us app ke hisaab se <code>/v1/countries?server=3</code> call hota hai.</p></div></div>
+</div>
+<div class="alert alert-warn" style="margin-top:16px"><span>⚠️</span><div><b>Asli Tiger key ke saath Tiger URL hi rakho.</b> Auto-fallback sirf <code>ats_</code> reseller key par chalta hai. Agar aap Tiger-SMS ka apna account use kar rahe ho to URL <code>https://api.tiger-sms.com/stubs/handler_api.php</code> aur key Tiger wali hi rehni chahiye.</div></div>
+
+<h3 style="margin:30px 0 10px;font-size:1.08rem;font-weight:700">API Keys — main database me save</h3>
+<p class="sec-desc" style="margin-bottom:14px">Jo bhi key generate hoti hai wo main bot ki <code>api_keys</code> table me permanently save hoti hai — sirf hash nahi, poora key (<code>raw_key</code>) bhi, taaki admin baad me <b>Admin → API Keys → View</b> se dekh sake.</p>
+<div class="grid-2">
+<div class="card"><h3 style="font-size:1rem;margin-bottom:8px">🗄️ Kya save hota hai</h3><p style="color:var(--muted);font-size:.9rem"><code>owner_id</code>, <code>label</code>, <code>prefix</code>, <code>key_hash</code> (auth ke liye), <code>raw_key</code> (admin ke liye), <code>status</code>, <code>expires_at</code>, <code>created_at</code>, <code>last_used_at</code>.</p></div>
+<div class="card"><h3 style="font-size:1rem;margin-bottom:8px">🔁 Restart safe</h3><p style="color:var(--muted);font-size:.9rem">Table bot start hote hi banti hai (web server fail ho jaye tab bhi). Key create karte waqt table missing mile to bot khud table bana kar dobara insert karta hai — key kabhi gum nahi hoti.</p></div>
+</div>
+<div class="alert alert-info" style="margin-top:16px"><span>💡</span><div><b>Render free plan:</b> disk nahi hota, isliye redeploy par database reset ho jaata hai. Keys permanent chahiye to <b>Starter plan + disk</b> (<code>render-paid.yaml</code>) use karo, ya backup se restore karo.</div></div>
+
+<h3 style="margin:30px 0 10px;font-size:1.08rem;font-weight:700">Automatic Backup — har 2 ghante, clones ke saath</h3>
+<p class="sec-desc" style="margin-bottom:14px">Auto Backup ON hone par main bot har <b>2 ghante</b> me owner ko <b>do</b> zip bhejta hai. Koi clone chhoota nahi.</p>
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div><h4>Server Backup</h4><p><code>bot_script.py</code> + main database snapshot + <code>sessions/</code> + welcome photo/video. Restore button se poora bot wapas aa jaata hai.</p></div></div>
+<div class="step"><div class="step-num">2</div><div><h4>Cloned Bots Backup</h4><p>Har <code>cloned_bots/&lt;bot_id&gt;/</code> ka database + <code>clone_config.json</code> ek alag zip me. SQLite backup API use hota hai, isliye running clone ka data corrupt nahi hota.</p></div></div>
+<div class="step"><div class="step-num">3</div><div><h4>Kab chalta hai</h4><p>Start hote hi ek baar, phir har 2 ghante. Admin → <b>Automation</b> me ON/OFF toggle aur <b>Send Backup Now</b> button hai. Clone bots khud backup nahi bhejte — sab kuch main bot karta hai.</p></div></div>
+</div>
+<div class="alert alert-info" style="margin-top:16px"><span>💡</span><div><b>Backup me bot tokens hote hain.</b> Zip ko private rakho aur kisi ke saath share mat karo.</div></div>
+</section>
+
+<section id="python" class="reveal">
+<div class="sec-title"><span class="icon" style="background:rgba(59,130,246,.15)">🐍</span> Python Bot Integration (Telethon)</div>
+<p class="sec-desc">Telethon async library hai, isliye <code>requests</code> ki jagah <b>httpx</b> use karo. <code>requests</code> event loop ko block karta hai, jisse bot sab users ke liye slow ho jaata hai.</p>
+<div class="alert alert-warn"><span>⚠️</span><div><b>Install:</b> <code>pip install httpx</code></div></div>
+
+<h3 style="margin:26px 0 10px;font-size:1.08rem;font-weight:700">1. API Client Wrapper</h3>
+<div class="code-block"><div class="code-header"><div class="left"><div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div><span>reseller_api.py</span></div>
+<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="kw">import</span> asyncio
+<span class="kw">import</span> httpx
+
+API_BASE = <span class="str">"https://YOUR_DOMAIN.com"</span>
+API_KEY  = <span class="str">"ats_your_key_here"</span>   <span class="cm"># .env mein rakho, code mein hardcode mat karo</span>
+
+ERRORS = {
+    <span class="num">400</span>: <span class="str">"Stock nahi ya params galat"</span>,
+    <span class="num">401</span>: <span class="str">"API key galat hai"</span>,
+    <span class="num">402</span>: <span class="str">"Reseller balance kam hai"</span>,
+    <span class="num">403</span>: <span class="str">"API key disabled hai, admin se contact karo"</span>,
+    <span class="num">404</span>: <span class="str">"Order nahi mila"</span>,
+    <span class="num">502</span>: <span class="str">"Provider error, thodi der baad try karo"</span>,
+    <span class="num">503</span>: <span class="str">"Provider configure nahi hai"</span>,
+}
+
+<span class="kw">class</span> <span class="fn">ResellerError</span>(Exception):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, status, msg):
+        <span class="fn">super</span>().__init__(msg)
+        self.status = status
+
+<span class="kw">class</span> <span class="fn">ResellerAPI</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self):
+        <span class="cm"># Ek hi client bot start pe banao, har request pe naya mat banao</span>
+        self.client = httpx.AsyncClient(
+            base_url=API_BASE,
+            headers={<span class="str">"X-API-Key"</span>: API_KEY},
+            timeout=<span class="num">20</span>,
+        )
+
+    <span class="kw">async def</span> <span class="fn">_req</span>(self, method, path, **kw):
+        r = <span class="kw">await</span> self.client.request(method, path, **kw)
+        <span class="kw">if</span> r.status_code != <span class="num">200</span>:
+            <span class="kw">raise</span> ResellerError(r.status_code, ERRORS.get(r.status_code, r.text))
+        <span class="kw">return</span> r.json()
+
+    <span class="kw">async def</span> <span class="fn">balance</span>(self):
+        <span class="kw">return await</span> self._req(<span class="str">"GET"</span>, <span class="str">"/v1/balance"</span>)
+
+    <span class="kw">async def</span> <span class="fn">buy</span>(self, **body):
+        <span class="cm"># buy(server=1, country_code="IN") | buy(server=2, country=22)</span>
+        <span class="kw">return await</span> self._req(<span class="str">"POST"</span>, <span class="str">"/v1/buy"</span>, json=body)
+
+    <span class="kw">async def</span> <span class="fn">order</span>(self, order_id):
+        <span class="kw">return await</span> self._req(<span class="str">"GET"</span>, <span class="str">f"/v1/order/{order_id}"</span>)
+
+    <span class="kw">async def</span> <span class="fn">cancel</span>(self, order_id):
+        <span class="kw">return await</span> self._req(<span class="str">"POST"</span>, <span class="str">f"/v1/cancel/{order_id}"</span>)
+
+    <span class="kw">async def</span> <span class="fn">retry</span>(self, order_id):
+        <span class="kw">return await</span> self._req(<span class="str">"POST"</span>, <span class="str">f"/v1/retry/{order_id}"</span>)
+
+    <span class="kw">async def</span> <span class="fn">wait_code</span>(self, order_id, timeout=<span class="num">300</span>, interval=<span class="num">5</span>):
+        <span class="cm"># Docs ke hisaab se 4-6 sec poll karo</span>
+        elapsed = <span class="num">0</span>
+        <span class="kw">while</span> elapsed &lt; timeout:
+            st = <span class="kw">await</span> self.order(order_id)
+            <span class="kw">if</span> st[<span class="str">"status"</span>] == <span class="str">"DONE"</span>:
+                <span class="kw">return</span> st[<span class="str">"code"</span>]
+            <span class="kw">if</span> st[<span class="str">"status"</span>] == <span class="str">"CANCELLED"</span>:
+                <span class="kw">raise</span> ResellerError(<span class="num">0</span>, <span class="str">"Order cancel ho gaya"</span>)
+            <span class="kw">await</span> asyncio.sleep(interval)
+            elapsed += interval
+        <span class="kw">raise</span> TimeoutError(<span class="str">"OTP time pe nahi aaya"</span>)
+
+api = ResellerAPI()</pre></div>
+
+<h3 style="margin:30px 0 10px;font-size:1.08rem;font-weight:700">2. Telethon Button Handler</h3>
+<div class="code-block"><div class="code-header"><div class="left"><div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div><span>bot.py</span></div>
+<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="kw">from</span> telethon <span class="kw">import</span> events
+<span class="kw">from</span> reseller_api <span class="kw">import</span> api, ResellerError
+
+<span class="cm"># bot = TelegramClient(...) already bana hua hai</span>
+
+<span class="kw">@</span>bot.on(events.CallbackQuery(data=<span class="str">b"buy_s1_IN"</span>))
+<span class="kw">async def</span> <span class="fn">buy_tg_account</span>(event):
+    <span class="kw">try</span>:
+        order = <span class="kw">await</span> api.buy(server=<span class="num">1</span>, country_code=<span class="str">"IN"</span>)
+    <span class="kw">except</span> ResellerError <span class="kw">as</span> e:
+        <span class="kw">await</span> event.answer(str(e), alert=<span class="kw">True</span>)
+        <span class="kw">return</span>
+
+    oid = order[<span class="str">"order_id"</span>]
+    <span class="kw">await</span> event.edit(<span class="str">f"📱 Number: {order['phone']}\nOTP ka wait karo..."</span>)
+
+    <span class="kw">try</span>:
+        code = <span class="kw">await</span> api.wait_code(oid)
+        <span class="kw">await</span> event.respond(<span class="str">f"✅ Code: {code}"</span>)
+    <span class="kw">except</span> ResellerError <span class="kw">as</span> e:
+        <span class="kw">await</span> event.respond(<span class="str">f"❌ {e}"</span>)
+    <span class="kw">except</span> TimeoutError:
+        <span class="kw">await</span> event.respond(<span class="str">"⏱️ Code time pe nahi aaya. Retry ya cancel karo."</span>)</pre></div>
+
+<div class="alert alert-info"><span>💡</span><div>
+<b>Bot ke liye tips:</b><br>
+• Order ko apne DB mein save karo (<code>order_id</code>, <code>user_id</code>, <code>status</code>), taaki bot restart ke baad bhi polling resume ho sake.<br>
+• <code>cancel</code> sirf <code>WAIT_CODE</code> pe, aur <code>retry</code> sirf <code>WAIT_RETRY</code> pe karo.<br>
+• Server 1 pe strictly no refund hai, isliye buy aur cancel pe confirm step lagao.<br>
+• Har buy se pehle <code>balance</code> check karna optional hai, lekin <code>402</code> ko zaroor handle karo.<br>
+• Heavy polling ke liye <code>asyncio.create_task()</code> use karo taaki handler jaldi return ho.
+</div></div>
+</section>
+
+<section class="reveal">
+<div class="alert alert-ok"><span>✅</span><div>
+<b>Ready?</b> Base URL + API Key admin se lo, examples copy karo, apna panel connect karo.
+Health check: <code>/health</code>
+</div></div>
+</section>
+</div>
+
+<footer>
+<div class="brand">Aaditya Tg Store</div>
+<p>Reseller API Documentation · v1.6</p>
+<p style="margin-top:8px">Server 1 · Server 2 · Server 3 · Built for resellers</p>
+</footer>
+
+<script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>20));
+const reveals=document.querySelectorAll('.reveal');
+const io=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+reveals.forEach(el=>io.observe(el));
+function copyText(btn,text){navigator.clipboard.writeText(text).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied')},1600)})}
+function copyCode(btn){const pre=btn.closest('.code-block').querySelector('pre');navigator.clipboard.writeText(pre.innerText).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied')},1600)})}
+
+/* ---------------- Live catalog (read-only, uses your API key) ---------------- */
+const API_BASE = "https://YOUR_DOMAIN.com";
+const KEY_STORE = "ats_docs_api_key";
+let currentServer = 1;
+let appList = [];
+const $id = (x) => document.getElementById(x);
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function money(n){return '\u20b9'+(Number(n)||0).toFixed(2);}
+function getKey(){return (localStorage.getItem(KEY_STORE)||'').trim();}
+function setStatus(t,cls){const el=$id('catalogStatus');el.textContent=t;el.className='cat-status'+(cls?' '+cls:'');}
+
+async function apiGet(path){
+  const key=getKey();
+  if(!key) throw new Error('Pehle API key daalo.');
+  const r=await fetch(API_BASE+path,{headers:{'X-API-Key':key,'Accept':'application/json'}});
+  let j=null; try{j=await r.json();}catch(e){}
+  if(!r.ok||!j||j.success===false){
+    const msg=(j&&(j.message||j.error))||('HTTP '+r.status);
+    throw new Error(msg);
+  }
+  return j;
+}
+function loading(){ $id('catalogBody').innerHTML='<div class="spinner"></div>'; }
+function errorBox(m){ $id('catalogBody').innerHTML='<div class="cat-empty" style="color:#f87171;border-color:rgba(239,68,68,.35)">'+esc(m)+'</div>'; }
+
+function countryRow(c, clickable){
+  const stock = (c.stock==null)?'':(c.stock>0? c.stock+' in stock':'Out of stock');
+  const cls = 'country-row'+(clickable?'':' static');
+  const attrs = clickable ? ' onclick="loadAccounts(\''+esc(c.country_code)+'\')"' : '';
+  return '<div class="'+cls+'"'+attrs+'>'+
+    '<div class="cr-flag">'+esc(c.flag||'\ud83c\udff3\ufe0f')+'</div>'+
+    '<div class="cr-main"><div class="cr-name">'+esc(c.name||c.country_code)+'</div>'+
+      '<div class="cr-code">'+esc(c.country_code||'')+(c.id!=null?' \u00b7 id '+c.id:'')+'</div></div>'+
+    '<div class="cr-price">'+money(c.price)+'</div>'+
+    '<div class="cr-stock'+((c.stock!=null&&c.stock<=0)?' out':'')+'">'+esc(stock)+'</div>'+
+  '</div>';
+}
+
+function renderCountries(j, server){
+  const rows=j.countries||[];
+  if(!rows.length){ $id('catalogBody').innerHTML='<div class="cat-empty">Is server pe abhi koi stock nahi hai.</div>'; return; }
+  let html='<div class="cat-summary">'+rows.length+' countries \u00b7 live prices</div>';
+  html+=rows.map(c=>countryRow(c, server===1)).join('');
+  if(server===1) html+='<div class="acc-wrap" id="accWrap" style="display:none"></div>';
+  $id('catalogBody').innerHTML=html;
+}
+
+async function loadAccounts(code){
+  const wrap=$id('accWrap'); if(!wrap) return;
+  wrap.style.display='block';
+  wrap.innerHTML='<div class="acc-head"><span>'+esc(code)+' accounts</span><span>loading\u2026</span></div><div class="spinner"></div>';
+  try{
+    const j=await apiGet('/v1/accounts?server=1&country_code='+encodeURIComponent(code)+'&limit=20');
+    const accs=j.accounts||[];
+    if(!accs.length){ wrap.innerHTML='<div class="acc-head"><span>'+esc(code)+' accounts</span></div><div class="cat-empty" style="padding:18px">Koi account available nahi.</div>'; return; }
+    let h='<div class="acc-head"><span>'+esc(code)+' \u00b7 '+accs.length+' accounts</span><span>lowest price first</span></div><div class="acc-grid">';
+    h+=accs.map(a=>{
+      let tags='';
+      if(a.twofa) tags+='<span class="acc-tag on">2FA</span>';
+      if(a.premium) tags+='<span class="acc-tag prem">Premium</span>';
+      if(a.spam_block) tags+='<span class="acc-tag warn">Spam</span>';
+      if(a.channels) tags+='<span class="acc-tag">'+a.channels+' ch</span>';
+      if(a.groups) tags+='<span class="acc-tag">'+a.groups+' grp</span>';
+      return '<div class="acc-card"><div class="acc-top"><span class="acc-id">'+esc(a.account_id)+'</span><span class="acc-price">'+money(a.price)+'</span></div>'+
+        '<div class="acc-tags">'+tags+'</div>'+
+        '<div class="acc-note">'+esc(a.origin||'')+(a.last_seen?' \u00b7 seen '+esc(a.last_seen):'')+'</div></div>';
+    }).join('');
+    h+='</div>';
+    wrap.innerHTML=h;
+  }catch(e){ wrap.innerHTML='<div class="acc-head"><span>'+esc(code)+' accounts</span></div><div class="cat-empty" style="padding:18px;color:#f87171">'+esc(e.message)+'</div>'; }
+}
+
+async function loadApps(){
+  const sel=$id('appSelect');
+  if(!appList.length){
+    const j=await apiGet('/v1/apps');
+    appList=(j.apps||[]).slice().sort((a,b)=>String(a.name||'').localeCompare(String(b.name||'')));
+    sel.innerHTML=appList.map(a=>'<option value="'+esc(a.code)+'">'+esc(a.name||a.code)+' ('+esc(a.code)+')</option>').join('');
+  }
+  sel.style.display='inline-block';
+  return sel.value;
+}
+
+async function loadCatalog(){
+  setStatus('Loading\u2026');
+  loading();
+  try{
+    if(currentServer===1){
+      $id('appSelect').style.display='none';
+      renderCountries(await apiGet('/v1/countries?server=1'),1);
+    } else if(currentServer===2){
+      $id('appSelect').style.display='none';
+      renderCountries(await apiGet('/v1/countries?server=2'),2);
+    } else {
+      const code=await loadApps();
+      renderCountries(await apiGet('/v1/countries?server=3&service='+encodeURIComponent(code)),3);
+    }
+    setStatus('Live \u2713','ok');
+  }catch(e){
+    errorBox(e.message);
+    setStatus('Error','err');
+  }
+}
+
+$id('saveKey').addEventListener('click',()=>{const k=$id('apiKey').value.trim(); if(!k){setStatus('Key daalo','err');return;} localStorage.setItem(KEY_STORE,k); loadCatalog();});
+$id('clearKey').addEventListener('click',()=>{localStorage.removeItem(KEY_STORE);$id('apiKey').value='';$id('catalogBody').innerHTML='<div class="cat-empty">API key daal ke <b>Load Catalog</b> dabao \u2014 countries, prices aur stock live dikhenge.</div>';setStatus('Key save nahi hai');});
+$id('refreshBtn').addEventListener('click',loadCatalog);
+$id('appSelect').addEventListener('change',loadCatalog);
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');currentServer=parseInt(t.dataset.server,10);loadCatalog();}));
+if(getKey()){ $id('apiKey').value=getKey(); loadCatalog(); }
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+# ============================================================================
+#  Render Blueprint — FREE PLAN
+#  Aaditya Tg Store bot (bot.py + docs-index.html)
+#
+#  FREE PLAN KI 3 ZAROORI BAATEIN:
+#   1. Free plan me Persistent Disk NAHI milta -> DATA_DIR / DB_PATH set nahi
+#      kiye. Bot apne repo folder me hi DB, sessions, cloned_bots banata hai.
+#   2. Free instance 15 min inactivity ke baad SLEEP ho jata hai. Telegram bot
+#      tab tak band rehta hai; Render URL kholne/health ping se wapas uthta hai.
+#   3. Redeploy / restart pe data (DB, sessions, clones) RESET ho jata hai.
+#      Backup lena ho to Admin panel se le lo, ya baad me Starter plan + disk
+#      pe shift karo (render-paid.yaml).
+# ============================================================================
+
+services:
+  - type: web
+    name: aaditya-tg-store
+    runtime: python
+    plan: free
+    region: singapore
+    branch: main
+    autoDeploy: true
+
+    buildCommand: pip install --upgrade pip setuptools wheel && pip install -r requirements.txt
+    startCommand: python bot.py
+    healthCheckPath: /health
+
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+
+      # NOTE: DATA_DIR aur DB_PATH jaan-boojh ke nahi diye.
+      # Free plan me disk nahi hota, isliye bot repo folder me hi likhta hai.
+      # (Agar DATA_DIR diya to /var/data mount na hone se crash/khali data.)
+
+      # Public base URL — docs page isi se apne aap fill hota hai.
+      # Deploy ke baad jo URL mile (https://<app>.onrender.com) wahi daalo.
+      - key: PUBLIC_URL
+        sync: false
+
+      # Clone bots ko yahi docs URL dikhta hai (usually PUBLIC_URL ke barabar).
+      - key: MAIN_API_DOCS_URL
+        sync: false
+
+      # CORS for docs / API
+      - key: API_ALLOWED_ORIGIN
+        value: "*"
+
+      # Bot credentials — Render dashboard me daalo, repo me NAHI.
+      - key: BOT_TOKEN
+        sync: false
+      - key: API_ID
+        sync: false
+      - key: API_HASH
+        sync: false
+      - key: ADMIN_ID
+        sync: false
